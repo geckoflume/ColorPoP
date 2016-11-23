@@ -10,8 +10,10 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 SOURCES += main.cpp \
-    affichage.cpp
+    affichage.cpp \
+    generation.cpp
 
 HEADERS += \
     affichage.h \
-    constantes.h
+    constantes.h \
+    generation.h

@@ -3,6 +3,9 @@
 #ifndef AFFICHAGE_H
 #define AFFICHAGE_H
 
+//Définir la couleur du terminal
+void couleurConsole(unsigned int laCouleurTexte, unsigned int laCouleurFond);
+
 //Afficher le plateau de jeu
 void affichagePlateau(unsigned int desJetons[][DIM]);
 
