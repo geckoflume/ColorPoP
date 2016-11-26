@@ -1,15 +1,16 @@
 #include "constantes.h"
+#include "generation.h"
 
 #ifndef AFFICHAGE_H
 #define AFFICHAGE_H
 
-//Définir la couleur du terminal
+//Definition de la couleur du terminal
 void couleurConsole(unsigned int laCouleurTexte, unsigned int laCouleurFond);
 
-//Afficher le plateau de jeu
-void affichagePlateau(unsigned int desJetons[][DIM]);
+//Affichage du plateau de jeu
+void affichagePlateau(Emplacement desJetons[DIM][DIM]);
 
-//Afficher les jetons
-void affichageJetons(unsigned int desJetons[][DIM], unsigned int unI, unsigned int unJ);
+//Affichage des jetons
+void affichageJetons(Emplacement desJetons[DIM][DIM], unsigned int unI, unsigned int unJ);
 
 #endif // AFFICHAGE_H

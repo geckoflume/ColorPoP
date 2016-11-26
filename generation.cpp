@@ -1,27 +1,32 @@
 #include <time.h>
 #include <iostream>
+#include <fstream>
+#include <string>
 #include "generation.h"
 #include "constantes.h"
-#include "affichage.h"
 
 /* On definit une loi de probabilite de 19/100 pour toutes les couleurs sauf le blanc
    qui a une probabilite de 5/100. On va ensuite tester dans quel intervalle se
-   situe le nombre aleatoire genere, selon le schema suivant :
+   situe le nombre aleatoire genere, selon les intervalles suivants :
 
-   |0.00-0.19|0.19-0.38|0.38-0.57|0.57-0.73|0.73-0.95|0.95-1.00|
-       Bleu      Vert     Rouge    Magenta    Jaune     Blanc
+   [0;18]=BLEU
+   [19;37]=VERT
+   [38;56]=ROUGE
+   [57;75]=MAGENTA
+   [76;94]=JAUNE
+   [95;99]=BLANC
  */
 
 unsigned int generationNbAleaLoi(double uneLoi[])
 {
-    //Generation d'un nombre compris entre 0 et 1
-    double leAlea=((double)rand()/(double)RAND_MAX);
+    //Generation d'un nombre compris entre 0 et 99
+    unsigned int leAlea=rand()%100;
 
     unsigned int leI=0;
     double laSomme=0;
 
     /* Dans le premier passage dans la boucle, on teste si leAlea
-       est inférieur à laSomme, c'est à dire uneLoi[0]. Si ce n'est pas le cas
+       est inferieur a laSomme, c'est a dire a uneLoi[0]. Si ce n'est pas le cas
        on relance la boucle : laSomme vaudra uneLoi[0] + uneLoi[1].
     */
     do{
@@ -37,7 +42,7 @@ void generationLoi(double totalPionsAPlacer, double loi[], unsigned int nbPionsA
 {
     for(unsigned int leI=0; leI<NB_COULEURS; leI++)
     {
-        loi[leI]=nbPionsAPlacer[leI]/totalPionsAPlacer;
+        loi[leI]=(nbPionsAPlacer[leI]/totalPionsAPlacer)*100;
     }
 }
 
@@ -59,7 +64,7 @@ unsigned int codageCouleurs(unsigned int unPion)
 }
 
 
-void generationCouleurPeuplementJetons(unsigned int desJetons[][DIM])
+void generationJetons(Emplacement desJetons[][DIM])
 {
     //Initialisation de rand
     srand(time(NULL));
@@ -88,7 +93,73 @@ void generationCouleurPeuplementJetons(unsigned int desJetons[][DIM])
             nbPionsAPlacer[lePion]--;
             totalPionsAPlacer--;
             generationLoi(totalPionsAPlacer, laLoi, nbPionsAPlacer);
-            desJetons[leI][leJ]=codageCouleurs(lePion);
+            desJetons[leI][leJ].saCouleur=codageCouleurs(lePion);
         }
     }
+}
+
+
+std::string enMajuscules(std::string unMot){
+    std::string leMot;
+    unsigned int leI(0);
+    while(unMot[leI]){
+        //Si la lettre est en minuscule, la remplacer par la majuscule correspondante
+        if(unMot[leI]>96&&unMot[leI]<123){
+            leMot+=unMot[leI]-32;
+        }
+        //Si la lettre est en majuscule
+        else if(unMot[leI]>64&&unMot[leI]<91){
+            leMot+=unMot[leI];
+        }
+        leI++;
+    }
+    return leMot;
+}
+
+
+bool init(Emplacement unPlateau[DIM][DIM], std::string unNomFichier)
+{
+    std::ifstream leFichierSave(unNomFichier);
+    std::string laCouleur;
+    std::string laCouleurMaj;
+    unsigned int laCouleurConvertie(0);
+    unsigned int leNombreTermes(0);
+
+    for(unsigned int leI=0; leI<DIM; leI++)
+    {
+        for(unsigned int leJ=0; leJ<DIM; leJ++)
+        {
+            //Prolongement Etape 3, comptage des termes et verification que le fichier existe
+            if(!leFichierSave.eof()&&!leFichierSave.fail())
+                leNombreTermes++;
+
+            leFichierSave>>laCouleur;
+            leFichierSave.ignore();
+
+            //Prolongement Etape 3, conversion des termes du fichier en majuscules
+            laCouleurMaj=enMajuscules(laCouleur);
+
+            //Conversion du terme en pion du plateau
+            if(laCouleurMaj=="BLEU")
+                laCouleurConvertie=BLEU;
+            else if(laCouleurMaj=="VERT")
+                laCouleurConvertie=VERT;
+            else if(laCouleurMaj=="ROUGE")
+                laCouleurConvertie=ROUGE;
+            else if(laCouleurMaj=="MAGENTA")
+                laCouleurConvertie=MAGENTA;
+            else if(laCouleurMaj=="JAUNE")
+                laCouleurConvertie=JAUNE;
+            else if(laCouleurMaj== "BLANC")
+                laCouleurConvertie=BLANC;
+            else{                //Dans le cas ou il s'agit d'un autre terme (VIDE, NOIR...)
+                laCouleurConvertie=NOIR;
+                unPlateau[leI][leJ].sonExistence=false;
+            }
+
+            unPlateau[leI][leJ].saCouleur=laCouleurConvertie;
+        }
+    }
+    //Prolongement Etape 3, verification du nombre de termes
+    return leNombreTermes==DIM*DIM;
 }

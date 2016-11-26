@@ -5,18 +5,18 @@
 const unsigned int DIM=10;
 
 //Constante du caractere ASCII des jetons
-const char LE_CHAR_JETON=4;
+const char JETON=4;
 
 //Couleurs des pions
 enum Couleur
 {
-    noir,
-    bleu=9,
-    vert_clair,
-    rouge=12,
-    magenta,
-    jaune,
-    blanc,
+    NOIR,
+    BLEU=9,
+    VERT,
+    ROUGE=12,
+    MAGENTA,
+    JAUNE,
+    BLANC,
 };
 
 //Constante du nombre de couleurs possibles
