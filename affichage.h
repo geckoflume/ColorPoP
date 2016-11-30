@@ -11,6 +11,6 @@ void couleurConsole(unsigned int laCouleurTexte, unsigned int laCouleurFond);
 void affichagePlateau(Emplacement desJetons[DIM][DIM]);
 
 //Affichage des jetons
-void affichageJetons(Emplacement desJetons[DIM][DIM], unsigned int unI, unsigned int unJ);
+void affichageJetons(unsigned int uneCouleur);
 
 #endif // AFFICHAGE_H

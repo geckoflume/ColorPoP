@@ -4,7 +4,6 @@
 #include "constantes.h"
 #include "generation.h"
 
-
 //Définir la couleur du terminal, la couleur de fond par defaut est noire
 void couleurConsole(unsigned int laCouleurTexte, unsigned int laCouleurFond=NOIR)
 {
@@ -20,9 +19,9 @@ void affichagePlateau(Emplacement lesJetons[][DIM])
     std::cout<<' '<<' ';
 
     //Affichage des nombres (en horizontal)
-    for(unsigned int leJ=0; leJ<DIM; leJ++)
+    for(unsigned int leI=0; leI<DIM; leI++)
     {
-        std::cout<<leJ<<' ';
+        std::cout<<leI<<' ';
     }
 
     //Affichage des lettres (en vertical)
@@ -32,12 +31,12 @@ void affichagePlateau(Emplacement lesJetons[][DIM])
         couleurConsole(NOIR, BLANC);
 
         //Decalage de la valeur decimale de la lettre de 65 en ASCII
-        std::cout<<std::endl<<char(leI+65)<<' ';
+        std::cout<<std::endl<<char(leI+'A')<<' ';
 
         //Affichage des jetons
-        for(unsigned int leK=0; leK<DIM; leK++)
+        for(unsigned int leJ=0; leJ<DIM; leJ++)
         {
-            affichageJetons(lesJetons, leI, leK);
+            affichageJetons(lesJetons[leI][leJ].saCouleur);
         }
     }
 
@@ -47,9 +46,9 @@ void affichagePlateau(Emplacement lesJetons[][DIM])
     couleurConsole(BLANC);
 }
 
-void affichageJetons(Emplacement desJetons[][DIM], unsigned int unI, unsigned int unJ)
+void affichageJetons(unsigned int uneCouleur)
 {
     //Couleur de texte de la couleur du jeton
-    couleurConsole(desJetons[unI][unJ].saCouleur);
+    couleurConsole(uneCouleur);
     std::cout<<JETON<<' ';
 }

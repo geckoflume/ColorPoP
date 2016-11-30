@@ -11,9 +11,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     affichage.cpp \
-    generation.cpp
+    generation.cpp \
+    interaction.cpp
 
 HEADERS += \
     affichage.h \
     constantes.h \
-    generation.h
+    generation.h \
+    interaction.h

@@ -4,10 +4,18 @@
 #ifndef GENERATION_H
 #define GENERATION_H
 
+//Structure d'emplacement pour chaque jeton
 struct Emplacement{
     bool sonExistence;
     unsigned int saCouleur;
+    bool sesVoisins;
 };
+
+//Verification que les pieces ont des voisins
+bool aDesVoisins(Emplacement desJetons[DIM][DIM]);
+
+//Initialisation du tableau de jetons
+void initialisationPlateau(Emplacement desJetons[DIM][DIM]);
 
 //Genereration d'un nombre aleatoire respectant la loi de probabilite
 unsigned int generationNbAleaLoi(double uneLoi[]);
