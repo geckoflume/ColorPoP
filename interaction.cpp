@@ -1,3 +1,10 @@
+/**
+ * \file interaction.cpp
+ * \brief Gestion de l'interaction du TP ColorPoP
+ * \author Florian MORNET
+ * \version 0.1
+ * \date 06 decembre 2016
+ */
 #include <iostream>
 #include <stdlib.h>
 #include "constantes.h"
@@ -79,7 +86,7 @@ void interactionUnJoueur(Emplacement desJetons[DIM][DIM])
         }while(!desJetons[lesIndex[0]][lesIndex[1]].sonExistence);
 
         //Si la piece saisie a des voisins, il faut l'enlever et faire descendre les autres pieces
-        if(desJetons[lesIndex[0]][lesIndex[1]].sesVoisins)
+        if(desJetons[lesIndex[0]][lesIndex[1]].aDesVoisins)
             decalagePieces(desJetons, lesIndex);
 
         //Effacer l'affichage de la console
@@ -87,6 +94,69 @@ void interactionUnJoueur(Emplacement desJetons[DIM][DIM])
 
         affichagePlateau(desJetons);
     }while(aDesVoisins(desJetons));
+
+    std::cout<<"Fin de la partie !\n";
+}
+
+
+void interactionUnJoueurSequences(Emplacement desJetons[DIM][DIM])
+{
+    unsigned int lesIndex[2];
+    unsigned int leCptSaisiePiece(0);
+    std::string laSaisie;
+    bool lErreur(false);
+
+    //Initialisation du champ sesVoisins pour chaque jeton
+    aDesVoisins(desJetons);
+
+    //Interaction avec le joueur jusqu'a ce qu'il n'y ait plus de pieces voisines de même couleur
+    do
+    {
+        leCptSaisiePiece=0;
+
+        //Saisie d'une piece tant que la sequence ne contient pas un nombre pair de caracteres
+        do
+        {
+            if(leCptSaisiePiece>0)
+                std::cout<<"Erreur, la sequence saisie est invalide !\n";
+            std::cout<<"Saisir une sequence de selection : ";
+            std::getline(std::cin, laSaisie);
+            leCptSaisiePiece++;
+        }while(laSaisie.size()%2!=0 && laSaisie.size()>0);
+
+        //Prolongement Etape 5, conversion en majuscules de la saisie pour gerer les reperes de ligne saisis en minuscules
+        laSaisie=enMajuscules(laSaisie);
+
+        //Si la piece saisie a des voisins, il faut l'enlever et faire descendre les autres pieces
+        for(unsigned int leI=0; leI<laSaisie.size() && !lErreur; leI+=2)
+        {
+            //Prolongement Etape 5, pour gerer l'ordre des reperes : si le premier repere entre est la ligne et si le deuxieme repere est la colonne
+            if(laSaisie[leI]>='A' && laSaisie[leI]<='Z' && laSaisie[leI+1]>='0' && laSaisie[leI+1]<='9')
+            {
+                lesIndex[0]=laSaisie[leI]-'A';
+                lesIndex[1]=laSaisie[leI+1]-'0';
+            }
+            //Prolongement Etape 5, pour gerer l'ordre des reperes : si le premier repere entre est la colonne et si le deuxieme repere est la ligne
+            else if(laSaisie[leI]>='0' && laSaisie[leI]<='9' && laSaisie[leI+1]>='A' && laSaisie[leI+1]<='Z')
+            {
+                lesIndex[0]=laSaisie[leI+1]-'A';
+                lesIndex[1]=laSaisie[leI]-'0';
+            }
+            //Si on est dans aucun des cas au dessus, et que les reperes saisis ne sont ni des lettres ni des chiffres
+            else
+            {
+                std::cout<<"Erreur, la sequence saisie est invalide !\n";
+                lErreur=true;
+            }
+            if(desJetons[lesIndex[0]][lesIndex[1]].aDesVoisins && !lErreur)
+                decalagePieces(desJetons, lesIndex);
+        }
+
+        //Effacer l'affichage de la console
+        system("cls");
+
+        affichagePlateau(desJetons);
+    }while(aDesVoisins(desJetons) && !lErreur);
 
     std::cout<<"Fin de la partie !\n";
 }

@@ -1,10 +1,16 @@
+/**
+ * \file affichage.cpp
+ * \brief Gestion de l'affichage du TP ColorPoP
+ * \author Florian MORNET
+ * \version 0.1
+ * \date 06 decembre 2016
+ */
 #include <iostream>
 #include <windows.h>
 #include "affichage.h"
 #include "constantes.h"
 #include "generation.h"
 
-//Définir la couleur du terminal, la couleur de fond par defaut est noire
 void couleurConsole(unsigned int laCouleurTexte, unsigned int laCouleurFond=NOIR)
 {
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -12,7 +18,7 @@ void couleurConsole(unsigned int laCouleurTexte, unsigned int laCouleurFond=NOIR
 }
 
 
-void affichagePlateau(Emplacement lesJetons[][DIM])
+void affichagePlateau(Emplacement lesJetons[DIM][DIM])
 {
     //Couleur de texte noire, couleur de fond blanche
     couleurConsole(NOIR, BLANC);
@@ -36,7 +42,8 @@ void affichagePlateau(Emplacement lesJetons[][DIM])
         //Affichage des jetons
         for(unsigned int leJ=0; leJ<DIM; leJ++)
         {
-            affichageJetons(lesJetons[leI][leJ].saCouleur);
+            couleurConsole(lesJetons[leI][leJ].saCouleur);
+            std::cout<<JETON<<' ';
         }
     }
 
@@ -44,11 +51,4 @@ void affichagePlateau(Emplacement lesJetons[][DIM])
 
     //Couleur de texte blanche
     couleurConsole(BLANC);
-}
-
-void affichageJetons(unsigned int uneCouleur)
-{
-    //Couleur de texte de la couleur du jeton
-    couleurConsole(uneCouleur);
-    std::cout<<JETON<<' ';
 }

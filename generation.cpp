@@ -1,3 +1,10 @@
+/**
+ * \file generation.cpp
+ * \brief Gestion de la generation du TP ColorPoP
+ * \author Florian MORNET
+ * \version 0.1
+ * \date 06 decembre 2016
+ */
 #include <time.h>
 #include <iostream>
 #include <fstream>
@@ -23,7 +30,7 @@ void initialisationPlateau(Emplacement desJetons[DIM][DIM])
         for(unsigned int leJ=0; leJ<DIM; leJ++){
             desJetons[leI][leJ].sonExistence=true;
             desJetons[leI][leJ].saCouleur=NOIR;
-            desJetons[leI][leJ].sesVoisins=false;
+            desJetons[leI][leJ].aDesVoisins=false;
         }
     }
 }
@@ -50,7 +57,7 @@ unsigned int generationNbAleaLoi(double uneLoi[])
 }
 
 
-void generationLoi(double totalPionsAPlacer, double loi[], unsigned int nbPionsAPlacer[])
+void generationLoi(double totalPionsAPlacer, double loi[NB_COULEURS], unsigned int nbPionsAPlacer[])
 {
     for(unsigned int leI=0; leI<NB_COULEURS; leI++)
     {
@@ -80,6 +87,9 @@ void generationJetons(Emplacement desJetons[DIM][DIM])
 {
     //Initialisation de rand
     srand(time(NULL));
+
+    //Initialisation du tableau de jetons
+    initialisationPlateau(desJetons);
 
     //Nombre de pions a placer pour chaque couleur
     unsigned int nbPionsAPlacer[NB_COULEURS]={19,19,19,19,19,5};
@@ -117,10 +127,10 @@ std::string enMajuscules(std::string unMot){
     while(unMot[leI]){
         //Si la lettre est en minuscule, la remplacer par la majuscule correspondante
         if(unMot[leI]>='a'&&unMot[leI]<='z'){
-            leMot+=unMot[leI]-' ';
+            leMot+=unMot[leI]+'A'-'a';
         }
-        //Si la lettre est en majuscule
-        else if(unMot[leI]>='A'&&unMot[leI]<='Z'){
+        //Si la lettre est en majuscule ou s'il s'agit d'un autre caractere
+        else{
             leMot+=unMot[leI];
         }
         leI++;
@@ -161,6 +171,9 @@ bool init(Emplacement unPlateau[DIM][DIM], std::string unNomFichier)
     unsigned int laCouleurConvertie(0);
     unsigned int leNombreTermes(0);
 
+    //Initialisation du tableau de jetons
+    initialisationPlateau(unPlateau);
+
     for(unsigned int leI=0; leI<DIM; leI++)
     {
         for(unsigned int leJ=0; leJ<DIM; leJ++)
@@ -171,9 +184,6 @@ bool init(Emplacement unPlateau[DIM][DIM], std::string unNomFichier)
 
             leFichierSave>>laCouleur;
             leFichierSave.ignore();
-
-            //Prolongement Etape 3, conversion des termes du fichier en majuscules
-            laCouleurMaj=enMajuscules(laCouleur);
 
             //Prolongement Etape 3, conversion des termes du fichier en majuscules
             laCouleurMaj=enMajuscules(laCouleur);
@@ -199,13 +209,13 @@ bool aDesVoisins(Emplacement desJetons[DIM][DIM])
         for(unsigned int leJ(0); leJ<DIM; leJ++)
         {
             if(desJetons[leI][leJ].sonExistence &&                                                  //Si le jeton existe
-                    ((desJetons[leI][leJ].saCouleur==desJetons[leI+1][leJ].saCouleur && leI<DIM)    //Si le jeton en dessous est identique et que l'on ne se situe pas sur une bordure basse
-                     || (desJetons[leI][leJ].saCouleur==desJetons[leI][leJ-1].saCouleur && leJ>0)   //Si le jeton a gauche est identique et que l'on ne se situe pas sur une bordure gauche
-                     || (desJetons[leI][leJ].saCouleur==desJetons[leI-1][leJ].saCouleur && leI>0)   //Si le jeton au dessus est identique et que l'on ne se situe pas sur une bordure haute
-                     || (desJetons[leI][leJ].saCouleur==desJetons[leI][leJ+1].saCouleur && leJ<DIM) //Si le jeton a droite est identique et que l'on ne se situe pas sur une bordure droite
+                    ((leI<DIM && desJetons[leI][leJ].saCouleur==desJetons[leI+1][leJ].saCouleur)    //Si l'on ne se situe pas sur une bordure basse et que le jeton en dessous est identique
+                     || (leJ>0 && desJetons[leI][leJ].saCouleur==desJetons[leI][leJ-1].saCouleur)   //Si l'on ne se situe pas sur une bordure gauche et que le jeton a gauche est identique
+                     || (leI>0 && desJetons[leI][leJ].saCouleur==desJetons[leI-1][leJ].saCouleur)   //Si l'on ne se situe pas sur une bordure haute et que le jeton au dessus est identique
+                     || (leJ<DIM && desJetons[leI][leJ].saCouleur==desJetons[leI][leJ+1].saCouleur) //Si l'on ne se situe pas sur une bordure droite et que le jeton a droite est identique
                      || desJetons[leI][leJ].saCouleur==BLANC))
             {
-                desJetons[leI][leJ].sesVoisins=true;
+                desJetons[leI][leJ].aDesVoisins=true;
                 leNombreVoisins++;
             }
         }

@@ -1,13 +1,30 @@
+/**
+ * \file constantes.h
+ * \brief Constantes du TP ColorPoP
+ * \author Florian MORNET
+ * \version 0.1
+ * \date 06 decembre 2016
+ */
 #ifndef CONSTANTES_H
 #define CONSTANTES_H
 
-//Constante de la dimension du plateau
+/**
+ * \var unsigned int DIM
+ * \brief Constante de la dimension du plateau
+ */
 const unsigned int DIM=10;
 
-//Constante du caractere ASCII des jetons
+/**
+ * \var const char JETON
+ * \brief Constante du caractere ASCII des jetons
+ */
 const char JETON=4;
 
-//Couleurs des pions
+/**
+ * \enum Couleur
+ *
+ * \brief Couleurs des pions
+ */
 enum Couleur
 {
     NOIR,
@@ -19,7 +36,10 @@ enum Couleur
     BLANC,
 };
 
-//Constante du nombre de couleurs possibles
+/**
+ * \var const unsigned int NB_COULEURS
+ * \brief Constante du nombre de couleurs possibles
+ */
 const unsigned int NB_COULEURS=6;
 
 #endif // CONSTANTES_H
