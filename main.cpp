@@ -2,12 +2,13 @@
  * \file main.cpp
  * \brief Fichier principal du TP ColorPoP
  * \author Florian MORNET
- * \version 0.1
- * \date 06 decembre 2016
+ * \version 0.3
+ * \date 04 janvier 2017
  */
 #include <iostream>
 #include "affichage.h"
 #include "constantes.h"
+#include "structures.h"
 #include "generation.h"
 #include "interaction.h"
 
@@ -21,20 +22,26 @@ int main()
     //Declaration du tableau de jetons
     Emplacement lesJetons[DIM][DIM];
 
+    //Declaration du tableau de joueurs
+    Joueur lesJoueurs[2];
+
+    initialisationJoueurs(lesJoueurs);
+
     /*
     //Verification du nombre de termes du fichier, initialisation du plateau et affichage
     if(init(lesJetons, "save.txt"))
-        affichagePlateau(lesJetons);
+        affichage(lesJetons);
     else
         std::cout<<"Erreur, le nombre de termes du fichier ne correspond pas a la taille du plateau !\n";
     */
 
     //Generation, initialisation du plateau et affichage
-    generationJetons(lesJetons);
-    affichagePlateau(lesJetons);
+    generation(lesJetons);
+    affichage(lesJetons);
 
     //interactionUnJoueur(lesJetons);
-    interactionUnJoueurSequences(lesJetons);
+    //interactionUnJoueurSequences(lesJetons);
+    interactionDeuxJoueurs(lesJetons, lesJoueurs);
 
     return 0;
 }

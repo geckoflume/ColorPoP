@@ -2,8 +2,8 @@
  * \file constantes.h
  * \brief Constantes du TP ColorPoP
  * \author Florian MORNET
- * \version 0.1
- * \date 06 decembre 2016
+ * \version 0.3
+ * \date 04 janvier 2017
  */
 #ifndef CONSTANTES_H
 #define CONSTANTES_H
@@ -34,6 +34,17 @@ enum Couleur
     MAGENTA,
     JAUNE,
     BLANC,
+};
+
+/**
+ * \enum Erreur
+ *
+ * \brief Codes des erreurs en sortie des fonctions
+ */
+enum Erreur
+{
+    NON_FINI=-10,
+    ISOLE=-2,
 };
 
 /**

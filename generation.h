@@ -2,45 +2,15 @@
  * \file generation.h
  * \brief Declaration des fonctions de generation du TP ColorPoP
  * \author Florian MORNET
- * \version 0.1
- * \date 06 decembre 2016
+ * \version 0.3
+ * \date 04 janvier 2017
  */
 #include <string>
 #include "constantes.h"
+#include "structures.h"
 
 #ifndef GENERATION_H
 #define GENERATION_H
-
-/**
- * \struct Emplacement
- * \brief Structure d'emplacement pour chaque jeton
- */
-struct Emplacement{
-    /**
-     * \var bool sonExistence
-     * \brief Si le pion existe
-     */
-    bool sonExistence;
-
-    /**
-     * \var unsigned int saCouleur
-     * \brief Couleur du pion
-     */
-    unsigned int saCouleur;
-
-    /**
-     * \var bool aDesVoisins
-     * \brief Si le pion a des voisins
-     */
-    bool aDesVoisins;
-};
-
-/**
- * \brief Verification que les pieces ont des voisins
- * \param[in, out] desJetons Emplacement correspondant au plateau de jetons
- * \return Un bool, true si il reste des voisins, false s'il n'en reste pas
- */
-bool aDesVoisins(Emplacement desJetons[DIM][DIM]);
 
 /**
  * \brief Initialisation du tableau de jetons
@@ -66,32 +36,11 @@ unsigned int generationNbAleaLoi(double uneLoi[]);
 void generationLoi(double totalPionsAPlacer, double loi[NB_COULEURS], unsigned int nbPionsAPlacer[]);
 
 /**
- * \brief Codage du nombre genere en couleur pour l'afficher dans le terminal
- * \param[in] unPion unsigned int correspondant au pion aleatoire
- * \return Un unsigned int correspondant a la couleur codee pour s'afficher dans le terminal
- */
-unsigned int codageCouleurs(unsigned int unPion);
-
-/**
  * \brief Generation des couleurs et peuplement du tableau de jetons
  * \param[in, out] desJetons Emplacement correspondant au plateau de jetons
  * \return Void
  */
-void generationJetons(Emplacement desJetons[DIM][DIM]);
-
-/**
- * \brief Conversion en majuscules d'un string
- * \param[in] unMot string correspondant a un mot
- * \return Un string correspondant au mot en majuscules
- */
-std::string enMajuscules(std::string unMot);
-
-/**
- * \brief Conversion des strings en couleurs de l'enum Couleurs
- * \param[in] uneCouleur string correspondant a une couleur
- * \return Un unsigned int correspondant a la couleur de l'enum Couleurs
- */
-unsigned int conversionStringsCouleur(std::string uneCouleur);
+void generation(Emplacement desJetons[DIM][DIM]);
 
 /**
  * \brief Initialisation du plateau a partir d'un fichier

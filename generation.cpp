@@ -2,8 +2,8 @@
  * \file generation.cpp
  * \brief Gestion de la generation du TP ColorPoP
  * \author Florian MORNET
- * \version 0.1
- * \date 06 decembre 2016
+ * \version 0.3
+ * \date 04 janvier 2017
  */
 #include <time.h>
 #include <iostream>
@@ -11,6 +11,8 @@
 #include <string>
 #include "generation.h"
 #include "constantes.h"
+#include "conversion.h"
+#include "structures.h"
 
 /* On definit une loi de probabilite de 19/100 pour toutes les couleurs sauf le blanc
    qui a une probabilite de 5/100. On va ensuite tester dans quel intervalle se
@@ -31,6 +33,10 @@ void initialisationPlateau(Emplacement desJetons[DIM][DIM])
             desJetons[leI][leJ].sonExistence=true;
             desJetons[leI][leJ].saCouleur=NOIR;
             desJetons[leI][leJ].aDesVoisins=false;
+            desJetons[leI][leJ].estDecalable=false;
+            desJetons[leI][leJ].sonNombreVidesEnHaut=0;
+            desJetons[leI][leJ].aSaColonneVide=false;
+            desJetons[leI][leJ].aSaColonneDecalable=false;
         }
     }
 }
@@ -66,24 +72,7 @@ void generationLoi(double totalPionsAPlacer, double loi[NB_COULEURS], unsigned i
 }
 
 
-unsigned int codageCouleurs(unsigned int unPion)
-{
-    unsigned int lePionCode=0;
-    switch (unPion) {
-    case 0:                     //Couleur bleue
-    case 1:                     //Couleur verte
-        lePionCode=unPion+9;
-        break;
-    default:                    //Couleurs rouge, magenta, jaune, blanc
-        lePionCode=unPion+10;
-        break;
-    }
-
-    return lePionCode;
-}
-
-
-void generationJetons(Emplacement desJetons[DIM][DIM])
+void generation(Emplacement desJetons[DIM][DIM])
 {
     //Initialisation de rand
     srand(time(NULL));
@@ -121,48 +110,6 @@ void generationJetons(Emplacement desJetons[DIM][DIM])
 }
 
 
-std::string enMajuscules(std::string unMot){
-    std::string leMot;
-    unsigned int leI(0);
-    while(unMot[leI]){
-        //Si la lettre est en minuscule, la remplacer par la majuscule correspondante
-        if(unMot[leI]>='a'&&unMot[leI]<='z'){
-            leMot+=unMot[leI]+'A'-'a';
-        }
-        //Si la lettre est en majuscule ou s'il s'agit d'un autre caractere
-        else{
-            leMot+=unMot[leI];
-        }
-        leI++;
-    }
-
-    return leMot;
-}
-
-
-unsigned int conversionStringsCouleur(std::string uneCouleur)
-{
-    unsigned int laCouleurConvertie(0);
-    if(uneCouleur=="BLEU")
-        laCouleurConvertie=BLEU;
-    else if(uneCouleur=="VERT")
-        laCouleurConvertie=VERT;
-    else if(uneCouleur=="ROUGE")
-        laCouleurConvertie=ROUGE;
-    else if(uneCouleur=="MAGENTA")
-        laCouleurConvertie=MAGENTA;
-    else if(uneCouleur=="JAUNE")
-        laCouleurConvertie=JAUNE;
-    else if(uneCouleur== "BLANC")
-        laCouleurConvertie=BLANC;
-    else{                //Dans le cas ou il s'agit d'un autre terme (VIDE, NOIR...)
-        laCouleurConvertie=NOIR;
-    }
-
-    return laCouleurConvertie;
-}
-
-
 bool init(Emplacement unPlateau[DIM][DIM], std::string unNomFichier)
 {
     std::ifstream leFichierSave(unNomFichier);
@@ -186,9 +133,9 @@ bool init(Emplacement unPlateau[DIM][DIM], std::string unNomFichier)
             leFichierSave.ignore();
 
             //Prolongement Etape 3, conversion des termes du fichier en majuscules
-            laCouleurMaj=enMajuscules(laCouleur);
+            enMajuscules(laCouleur);
 
-            laCouleurConvertie=conversionStringsCouleur(laCouleurMaj);
+            laCouleurConvertie=conversionStringsCouleur(laCouleur);
             unPlateau[leI][leJ].saCouleur=laCouleurConvertie;
             if(laCouleurConvertie==NOIR)
                 unPlateau[leI][leJ].sonExistence=false;
@@ -197,29 +144,4 @@ bool init(Emplacement unPlateau[DIM][DIM], std::string unNomFichier)
 
     //Prolongement Etape 3, verification du nombre de termes
     return leNombreTermes==DIM*DIM;
-}
-
-
-bool aDesVoisins(Emplacement desJetons[DIM][DIM])
-{
-    unsigned int leNombreVoisins(0);
-
-    for(unsigned int leI(0); leI<DIM; leI++)
-    {
-        for(unsigned int leJ(0); leJ<DIM; leJ++)
-        {
-            if(desJetons[leI][leJ].sonExistence &&                                                  //Si le jeton existe
-                    ((leI<DIM && desJetons[leI][leJ].saCouleur==desJetons[leI+1][leJ].saCouleur)    //Si l'on ne se situe pas sur une bordure basse et que le jeton en dessous est identique
-                     || (leJ>0 && desJetons[leI][leJ].saCouleur==desJetons[leI][leJ-1].saCouleur)   //Si l'on ne se situe pas sur une bordure gauche et que le jeton a gauche est identique
-                     || (leI>0 && desJetons[leI][leJ].saCouleur==desJetons[leI-1][leJ].saCouleur)   //Si l'on ne se situe pas sur une bordure haute et que le jeton au dessus est identique
-                     || (leJ<DIM && desJetons[leI][leJ].saCouleur==desJetons[leI][leJ+1].saCouleur) //Si l'on ne se situe pas sur une bordure droite et que le jeton a droite est identique
-                     || desJetons[leI][leJ].saCouleur==BLANC))
-            {
-                desJetons[leI][leJ].aDesVoisins=true;
-                leNombreVoisins++;
-            }
-        }
-    }
-
-    return leNombreVoisins>0;
 }

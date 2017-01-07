@@ -12,10 +12,15 @@ TEMPLATE = app
 SOURCES += main.cpp \
     affichage.cpp \
     generation.cpp \
-    interaction.cpp
+    interaction.cpp \
+    modification.cpp \
+    conversion.cpp
 
 HEADERS += \
     affichage.h \
     constantes.h \
     generation.h \
-    interaction.h
+    interaction.h \
+    structures.h \
+    modification.h \
+    conversion.h

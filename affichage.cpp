@@ -2,23 +2,24 @@
  * \file affichage.cpp
  * \brief Gestion de l'affichage du TP ColorPoP
  * \author Florian MORNET
- * \version 0.1
- * \date 06 decembre 2016
+ * \version 0.3
+ * \date 04 janvier 2017
  */
 #include <iostream>
 #include <windows.h>
 #include "affichage.h"
 #include "constantes.h"
+#include "structures.h"
 #include "generation.h"
 
-void couleurConsole(unsigned int laCouleurTexte, unsigned int laCouleurFond=NOIR)
+void couleurConsole(unsigned int laCouleurTexte, unsigned int laCouleurFond)
 {
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(h, laCouleurFond*16+laCouleurTexte);
 }
 
 
-void affichagePlateau(Emplacement lesJetons[DIM][DIM])
+void affichage(Emplacement lesJetons[DIM][DIM])
 {
     //Couleur de texte noire, couleur de fond blanche
     couleurConsole(NOIR, BLANC);
