@@ -428,3 +428,43 @@ void interactionDeuxJoueurs(Emplacement desJetons[DIM][DIM], Joueur desJoueurs[2
         std::cout<<desJoueurs[leNombreGagnants].sonNom<<" a gagne !"<<std::endl;
     }
 }
+
+
+void menu(Emplacement desJetons[DIM][DIM])
+{
+    int leChoix(0);
+
+    //Affiche le menu et demande a l'utilisateur de saisir un choix tant que leChoix ne correspond pas a une saisie valide
+    do
+    {
+        system("cls");
+        afficherMenu();
+        std::cout<<"Choix : ";
+
+        //Si la saisie est valide, ignorer le prochain caractere pour eviter que la saisie soit prise pour l'initialisation des joueurs
+        if(std::cin>>leChoix)
+            std::cin.ignore();
+        //Si la saisie est invalide, reinitialiser le flag d'etat de cin et ignore le reste de la saisie
+        else
+        {
+            std::cin.clear();
+            std::cin.ignore(INT_MAX, '\n');
+        }
+    }while(leChoix!=1 && leChoix!=2);
+
+    switch (leChoix)
+    {
+    case 1:
+        //Generation, initialisation du plateau
+        generation(desJetons);
+        break;
+    case 2:
+        //Verification du nombre de termes du fichier, initialisation du plateau et affichage
+        if(!init(desJetons, "save.txt"))
+            std::cout<<"Erreur, le nombre de termes du fichier ne correspond pas a la taille du plateau !\n";
+        break;
+    default:
+        std::cout<<"Erreur";
+    }
+    system("cls");
+}

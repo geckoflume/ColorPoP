@@ -67,4 +67,11 @@ void interactionUnJoueurSequences(Emplacement desJetons[DIM][DIM]);
  * \return Void
  */
 void interactionDeuxJoueurs(Emplacement desJetons[DIM][DIM], Joueur desJoueurs[2]);
+
+/**
+ * \brief Affichage du menu et gestion de la saisie
+ * \param[in] desJetons Emplacement correspondant au plateau de jetons
+ * \return Void
+ */
+void menu(Emplacement desJetons[DIM][DIM]);
 #endif // INTERACTION_H

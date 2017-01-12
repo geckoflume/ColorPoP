@@ -25,19 +25,9 @@ int main()
     //Declaration du tableau de joueurs
     Joueur lesJoueurs[2];
 
+    menu(lesJetons);
+
     initialisationJoueurs(lesJoueurs);
-
-    /*
-    //Verification du nombre de termes du fichier, initialisation du plateau et affichage
-    if(init(lesJetons, "save.txt"))
-        affichage(lesJetons);
-    else
-        std::cout<<"Erreur, le nombre de termes du fichier ne correspond pas a la taille du plateau !\n";
-    */
-
-    //Generation, initialisation du plateau et affichage
-    generation(lesJetons);
-    affichage(lesJetons);
 
     //interactionUnJoueur(lesJetons);
     //interactionUnJoueurSequences(lesJetons);

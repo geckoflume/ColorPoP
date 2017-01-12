@@ -53,3 +53,40 @@ void affichage(Emplacement lesJetons[DIM][DIM])
     //Couleur de texte blanche
     couleurConsole(BLANC);
 }
+
+
+void repetitionCaractere(unsigned int unNombre, char unChar)
+{
+    for(unsigned int leI(0); leI<unNombre; leI++)
+        std::cout<<unChar;
+}
+
+
+void afficherMenu()
+{
+    std::cout<<"   ______      __           ____        ____     ______"<<std::endl;
+    std::cout<<"  / ____/___  / /___  _____/ __ \\____  / __ \\   / ____/__    __"<<std::endl;
+    std::cout<<" / /   / __ \\/ / __ \\/ ___/ /_/ / __ \\/ /_/ /  / /  __/ /___/ /_"<<std::endl;
+    std::cout<<"/ /___/ /_/ / / /_/ / /  / ____/ /_/ / ____/  / /__/_  __/_  __/"<<std::endl;
+    std::cout<<"\\____/\\____/_/\\____/_/  /_/    \\____/_/       \\____//_/   /_/"<<std::endl;
+    std::cout<<std::endl<<std::endl;
+    std::cout<<'\t'<<"Bienvenue dans le mini-jeu ColorPop !"<<std::endl;
+    std::cout<<char(201);
+    repetitionCaractere(55, 205);
+    std::cout<<char(187)<<std::endl;
+    std::cout<<char(186)<<" Choisissez une option pour demarrer une partie :";
+    repetitionCaractere(6, ' ');
+    std::cout<<char(186)<<std::endl;
+    std::cout<<char(186);
+    repetitionCaractere(55, ' ');
+    std::cout<<char(186)<<std::endl;
+    std::cout<<char(186)<<'\t'<<"1. Plateau aleatoire";
+    repetitionCaractere(28, ' ');
+    std::cout<<char(186)<<std::endl;
+    std::cout<<char(186)<<'\t'<<"2. Charger depuis un fichier";
+    repetitionCaractere(20, ' ');
+    std::cout<<char(186)<<std::endl;
+    std::cout<<char(200);
+    repetitionCaractere(55, 205);
+    std::cout<<char(188)<<std::endl;
+}

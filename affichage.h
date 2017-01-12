@@ -28,4 +28,17 @@ void couleurConsole(unsigned int laCouleurTexte, unsigned int laCouleurFond=NOIR
  */
 void affichage(Emplacement desJetons[DIM][DIM]);
 
+/**
+ * \brief Repetition d'un caractere unNombre de fois
+ * \param[in] unNombre unsigned int correspondant au nombre d'occurrences du caractere a repeter
+ * \param[in] unChar char correspondant au caractere a repeter
+ * \return Void
+ */
+void repetitionCaractere(unsigned int unNombre, char unChar);
+
+/**
+ * \brief Menu permettant de choisir de générer un plateau aleatoirement ou de charger depuis un fichier
+ * \return Void
+ */
+void afficherMenu();
 #endif // AFFICHAGE_H
